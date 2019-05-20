@@ -15,6 +15,8 @@ FRUITS = ["apple", "banana", "orange"]
 def reaction(maybe_fruit)
   if FRUITS.include? maybe_fruit
     puts "OMG, thanks so much for the #{maybe_fruit}!"
+  elsif maybe_fruit == "coffee"
+    raise ArgumentError
   else 
     raise StandardError 
   end 
@@ -23,14 +25,31 @@ end
 def feed_me_a_fruit
   puts "Hello, I am a friendly monster. :)"
 
-  puts "Feed me a fruit! (Enter the name of a fruit:)"
-  maybe_fruit = gets.chomp
-  reaction(maybe_fruit) 
-end  
+  error_count = 0
+  begin
+    puts "Feed me a fruit! (Enter the name of a fruit:)"
+    maybe_fruit = gets.chomp
+    reaction(maybe_fruit)
+  rescue ArgumentError => err
+    retry
+  rescue StandardError => err
+    error_count += 1
+    retry if (error_count == 1)
+  end
+end
 
 # PHASE 4
 class BestFriend
   def initialize(name, yrs_known, fav_pastime)
+    if name.length <= 0
+      raise "Name has to have length greater than zero."
+    end
+    if yrs_known < 5
+      raise "Friendships need at least five years to mature."
+    end
+    if fav_pastime.length <= 0
+      raise "Favorite Passtime has to have length greater than zero."
+    end
     @name = name
     @yrs_known = yrs_known
     @fav_pastime = fav_pastime
@@ -48,5 +67,3 @@ class BestFriend
     puts "Hey bestie, I made you a friendship bracelet. It says my name, #{@name}, so you never forget me." 
   end
 end
-
-
