@@ -1,5 +1,6 @@
 require_relative "piece.rb"
 class Board
+
   def initialize
     @board = Array.new(8) { [] }
     @board.each_with_index do |row, idx|
@@ -22,5 +23,9 @@ class Board
     raise "the piece can not move to end position" unless @board[end_pos[0]][end_pos[1]].nil?
     @board[end_pos[0]][end_pos[1]] = @board[start_pos[0]][start_pos[1]]
     @board[start_pos[0]][start_pos[1]] = nil
+  end
+
+  def valid_pos?(pos)
+    pos.all? { |idx| idx >= 0 && idx <= 7 }
   end
 end
